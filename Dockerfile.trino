@@ -1,0 +1,2 @@
+# Dockerfile for Trino
+FROM trinodb/trino:latest
