@@ -1,0 +1,13 @@
+dbt_snowflake:
+  outputs:
+    dev:
+      account: irkaznf-btb59876
+      database: DEV
+      password: Password@100
+      role: SYSADMIN
+      schema: RAW
+      threads: 2
+      type: snowflake
+      user: suhail
+      warehouse: COMPUTE_WH
+  target: dev
