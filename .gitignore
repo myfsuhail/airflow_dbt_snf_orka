@@ -3,3 +3,6 @@ logs/*
 dbt-env
 
 dags/__pycache__
+dags/sources/IPL_Deliveries.sqlite
+dags/sources/matches.json
+dags/sources/Players_info.csv

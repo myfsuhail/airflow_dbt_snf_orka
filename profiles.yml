@@ -1,4 +1,4 @@
-dbt_snowflake:
+dbt_snf_orka:
   outputs:
     dev:
       account: irkaznf-btb59876
