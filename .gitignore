@@ -1,6 +1,7 @@
 logs
 logs/*
 dbt-env
+dbt_venv
 
 dags/__pycache__
 dags/sources/IPL_Deliveries.sqlite

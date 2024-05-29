@@ -30,17 +30,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
-  dbt_snowflake:
-    +database: target.name
+  dbt_snf_orka:
+    database: |
+      {%- if  target.name == "dev" -%} dev
+      {%- elif target.name == "qa"  -%} qa
+      {%- elif target.name == "prod"  -%} prod
+      {%- else -%} invalid_database
+      {%- endif -%}
     # Config indicated by + and applies to all files under models/example/
     example:
       +materialized: view
     raw:
       +materialized: table
       +schema: raw
-    stage:
-      +materialized: table
-      +schema: stage
     modelled:
       +materialized: table
       +schema: modelled
