@@ -7,6 +7,7 @@ import pandas as pd
 import sqlite3
 from snowflake.connector.pandas_tools import write_pandas
 from airflow.utils.task_group import TaskGroup
+from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 import snowflake.connector
 import json
 
@@ -173,10 +174,12 @@ with DAG(
             sql = "insert overwrite into dev.raw.players_info select * from dev.raw.players_info_stage"
         )
 
-    oops = SnowflakeOperator(
-        snowflake_conn_id = 'snowflake_conn',
-        task_id = 'oops',
-        sql = "insert overwrite into dev.raw.players_info select * from dev.raw.players_info_stage"
+    trigger_dbt_models = TriggerDagRunOperator(
+        task_id = 'trigger_dbt_models',
+        trigger_dag_id  = "load_dbt_models",
+        wait_for_completion = True,
+        poke_interval = 30,
+        deferrable = True
     )
 
 
@@ -186,4 +189,4 @@ truncate_match_info_stage >> extract_transform_load_match_info_stage >> move_dat
 
 truncate_players_info_stage >> extract_transform_load_players_info_stage >> move_data_to_players_info
 
-[move_data_to_deliveries, move_data_to_match_info, move_data_to_players_info] >> oops
+[move_data_to_deliveries, move_data_to_match_info, move_data_to_players_info] >> trigger_dbt_models
