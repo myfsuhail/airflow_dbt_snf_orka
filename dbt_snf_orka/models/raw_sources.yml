@@ -1,0 +1,15 @@
+version: 2
+ 
+sources:
+  - name: raw_conn 
+    database: |
+      {%- if  target.name == "dev" -%} dev
+      {%- elif target.name == "qa"  -%} qa
+      {%- elif target.name == "prod"  -%} prod
+      {%- else -%} invalid_database
+      {%- endif -%}
+    schema: raw
+    tables:
+      - name: deliveries
+      - name: match_info
+      - name: players_info
